@@ -1,117 +1,99 @@
-# Ported from Userge-Plugins
+# Credits of Plugin @ViperAdnan and @mrconfused(revert)[will add sql soon]
+import html
 
-import asyncio
-import os
-
-from telethon.tl.functions.account import UpdateProfileRequest
-from telethon.tl.functions.photos import DeletePhotosRequest, UploadProfilePhotoRequest
+from telethon.tl import functions
 from telethon.tl.functions.users import GetFullUserRequest
-from telethon.tl.types import InputPhoto
 
-from userbot import CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
-from userbot.events import register
-
-PHOTO = TEMP_DOWNLOAD_DIRECTORY + "profile_pic.jpg"
-USER_DATA = {}
-
-
-@register(pattern=r"^\.clone(?: |$)(.*)", outgoing=True)
-async def clone(cloner):
-    """Clone first name, last name, bio and profile picture"""
-    reply_message = cloner.reply_to_msg_id
-    message = await cloner.get_reply_message()
-    if reply_message:
-        input_ = message.sender.id
-    else:
-        input_ = cloner.pattern_match.group(1)
-
-    if not input_:
-        await cloner.edit("`Please reply to user or input username`")
-        await asyncio.sleep(5)
-        await cloner.delete()
-        return
-
-    await cloner.edit("`Cloning...`")
-
-    try:
-        user = await cloner.client(GetFullUserRequest(input_))
-    except ValueError:
-        await cloner.edit("`Invalid username!`")
-        await asyncio.sleep(2)
-        await cloner.delete()
-        return
-    me = await cloner.client.get_me()
-
-    if USER_DATA or os.path.exists(PHOTO):
-        await cloner.edit("`First revert!`")
-        await asyncio.sleep(2)
-        await cloner.delete()
-        return
-    mychat = await cloner.client(GetFullUserRequest(me.id))
-    USER_DATA.update(
-        {
-            "first_name": mychat.user.first_name or "",
-            "last_name": mychat.user.last_name or "",
-            "about": mychat.about or "",
-        }
-    )
-    await cloner.client(
-        UpdateProfileRequest(
-            first_name=user.user.first_name or "",
-            last_name=user.user.last_name or "",
-            about=user.about or "",
-        )
-    )
-    if not user.profile_photo:
-        await cloner.edit("`User not have profile photo, cloned name and bio...`")
-        await asyncio.sleep(5)
-        await cloner.delete()
-        return
-    await cloner.client.download_profile_photo(user.user.id, PHOTO)
-    await cloner.client(
-        UploadProfilePhotoRequest(file=await cloner.client.upload_file(PHOTO))
-    )
-    await cloner.edit("`Profile is successfully cloned!`")
-    await asyncio.sleep(3)
-    await cloner.delete()
-
-
-@register(pattern=r"^\.revert(?: |$)(.*)", outgoing=True)
-async def revert_(reverter):
-    """Returns Original Profile"""
-    if not (USER_DATA or os.path.exists(PHOTO)):
-        await reverter.edit("`Already reverted!`")
-        await asyncio.sleep(2)
-        await reverter.delete()
-        return
-    if USER_DATA:
-        await reverter.client(UpdateProfileRequest(**USER_DATA))
-        USER_DATA.clear()
-    if os.path.exists(PHOTO):
-        me = await reverter.client.get_me()
-        photo = (await reverter.client.get_profile_photos(me.id, limit=1))[0]
-        await reverter.client(
-            DeletePhotosRequest(
-                id=[
-                    InputPhoto(
-                        id=photo.id,
-                        access_hash=photo.access_hash,
-                        file_reference=photo.file_reference,
-                    )
-                ]
-            )
-        )
-        os.remove(PHOTO)
-    await reverter.edit("`Profile is successfully Reverted!`")
-    await asyncio.sleep(3)
-    await reverter.delete()
-
-
-CMD_HELP.update(
-    {
-        "clone": ">`.clone` <reply to user>/<username>"
-        "\nUsage: Clones someone names, profile picture, and bio"
-        "\n\n>`.revert`"
-        "\nUsage: Reverts back to your profile"
-    }
+from ..Config import Config
+from . import (
+    ALIVE_NAME,
+    AUTONAME,
+    BOTLOG,
+    BOTLOG_CHATID,
+    DEFAULT_BIO,
+    catub,
+    edit_delete,
+    get_user_from_event,
 )
+
+plugin_category = "utils"
+DEFAULTUSER = str(AUTONAME) if AUTONAME else str(ALIVE_NAME)
+DEFAULTUSERBIO = (
+    str(DEFAULT_BIO)
+    if DEFAULT_BIO
+    else "sıɥʇ ǝpoɔǝp uǝɥʇ llıʇu∩ ˙ ǝɔɐds ǝʇɐʌıɹd ǝɯos ǝɯ ǝʌı⅁˙"
+)
+
+
+@catub.cat_cmd(
+    pattern="clone(?:\s|$)([\s\S]*)",
+    command=("clone", plugin_category),
+    info={
+        "header": "To clone account of mentiond user or replied user",
+        "usage": "{tr}clone <username/userid/reply>",
+    },
+)
+async def _(event):
+    "To clone account of mentiond user or replied user"
+    replied_user, error_i_a = await get_user_from_event(event)
+    if replied_user is None:
+        return
+    user_id = replied_user.id
+    profile_pic = await event.client.download_profile_photo(user_id, Config.TEMP_DIR)
+    first_name = html.escape(replied_user.first_name)
+    if first_name is not None:
+        first_name = first_name.replace("\u2060", "")
+    last_name = replied_user.last_name
+    if last_name is not None:
+        last_name = html.escape(last_name)
+        last_name = last_name.replace("\u2060", "")
+    if last_name is None:
+        last_name = "⁪⁬⁮⁮⁮⁮ ‌‌‌‌"
+    replied_user = await event.client(GetFullUserRequest(replied_user.id))
+    user_bio = replied_user.about
+    if user_bio is not None:
+        user_bio = replied_user.about
+    await event.client(functions.account.UpdateProfileRequest(first_name=first_name))
+    await event.client(functions.account.UpdateProfileRequest(last_name=last_name))
+    await event.client(functions.account.UpdateProfileRequest(about=user_bio))
+    try:
+        pfile = await event.client.upload_file(profile_pic)
+    except Exception as e:
+        return await edit_delete(event, f"**Failed to clone due to error:**\n__{e}__")
+    await event.client(functions.photos.UploadProfilePhotoRequest(pfile))
+    await edit_delete(event, "**LET US BE AS ONE**")
+    if BOTLOG:
+        await event.client.send_message(
+            BOTLOG_CHATID,
+            f"#CLONED\nsuccessfully cloned [{first_name}](tg://user?id={user_id })",
+        )
+
+
+@catub.cat_cmd(
+    pattern="revert$",
+    command=("revert", plugin_category),
+    info={
+        "header": "To revert back to your original name , bio and profile pic",
+        "note": "For proper Functioning of this command you need to set AUTONAME and DEFAULT_BIO with your profile name and bio respectively.",
+        "usage": "{tr}revert",
+    },
+)
+async def _(event):
+    "To reset your original details"
+    name = f"{DEFAULTUSER}"
+    blank = ""
+    bio = f"{DEFAULTUSERBIO}"
+    await event.client(
+        functions.photos.DeletePhotosRequest(
+            await event.client.get_profile_photos("me", limit=1)
+        )
+    )
+    await event.client(functions.account.UpdateProfileRequest(about=bio))
+    await event.client(functions.account.UpdateProfileRequest(first_name=name))
+    await event.client(functions.account.UpdateProfileRequest(last_name=blank))
+    await edit_delete(event, "successfully reverted to your account back")
+    if BOTLOG:
+        await event.client.send_message(
+            BOTLOG_CHATID,
+            "#REVERT\nsuccessfully reverted back to your profile",
+        )
