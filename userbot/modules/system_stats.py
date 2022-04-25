@@ -87,8 +87,6 @@ async def amireallyalive(alive):
         "▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n" 
         f"⚔️ 𝗠𝗬 𝗕𝗢𝗧 𝗜𝗦 𝗪𝗢𝗥𝗞𝗜𝗡𝗚 ⚔️\n" 
         "▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n" 
-        f"🐍 𝗣𝗬𝗧𝗛𝗢𝗡 ➪ v{python_version()}\n" 
-        f"⚙️ 𝗧𝗘𝗟𝗘𝗧𝗛𝗢𝗡 ➪ v{version.__version__}\n" 
         f"⚡️𝗠𝗬 𝗢𝗪𝗡𝗘𝗥⚡️➪{DEFAULTUSER}** \n" 
         f"**⚡️𝗥𝗘𝗣𝗢⚡️➪ [TEMPEST](https://github.com/kirito-1240/TempestUB)** \n" 
         f"**⚡️𝗖𝗛𝗔𝗡𝗡𝗘𝗟⚡️➪ [𝗝𝗢𝗜𝗡](https://t.me/TEMPEST_UB_UPDATES)** \n" 
