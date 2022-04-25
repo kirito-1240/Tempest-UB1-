@@ -1,6 +1,6 @@
 {
-  "name": "Defenders UserBot",
-  "description": "[DEFENDERS-USERBOT] A modular Telegram userbot running on Python 3.8",
+  "name": "Tempest UserBot",
+  "description": "[TEMPEST-USERBOT] A modular Telegram userbot running on Python 3.8",
   "keywords": [
     "telegram",
     "userbot",
@@ -8,7 +8,7 @@
     "modular",
     "productivity"
   ],
-  "repository": "https://github.com/kirito-1240/exp",
+  "repository": "https://github.com/kirito-1240/TempestUB",
   "website": "https://telegra.ph/How-to-host-a-Telegram-Userbot-11-02",
   "stack": "container",
   "env": {
