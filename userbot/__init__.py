@@ -47,7 +47,7 @@ if version_info[0] < 3 or version_info[1] < 8:
 # Check if the config was edited by using the already used variable.
 # Basically, its the 'virginity check' for the config file ;)
 CONFIG_CHECK = os.environ.get(
-    "___________PLOX_______REMOVE_____THIS_____LINE__________", None
+    "___________PLEASE_______REMOVE_____THIS_____LINE__________", None
 )
 
 if CONFIG_CHECK:
@@ -80,7 +80,7 @@ HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 
 # Custom (forked) repo URL for updater.
 UPSTREAM_REPO_URL = os.environ.get(
-    "UPSTREAM_REPO_URL", "https://github.com/THETORNADOTEAM/DEFENDERS-USERBOT.git"
+    "UPSTREAM_REPO_URL", "https://github.com/kirito-1240/TempestUB.git"
 )
 # UPSTREAM_REPO_URL branch, the default is master
 UPSTREAM_REPO_BRANCH = os.environ.get("UPSTREAM_REPO_BRANCH", "master")
@@ -97,7 +97,7 @@ OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY", None)
 # Default .alive name anf logo
 ALIVE_NAME = os.environ.get("ALIVE_NAME") or None
 ALIVE_LOGO = (
-    os.environ.get("ALIVE_LOGO") or "https://telegra.ph/file/d0df335aa7ef51db6e03d.mp4"
+    os.environ.get("ALIVE_LOGO") or "https://telegra.ph/file/2c775c0c0aeb9885bfd10.mp4"
 )
 
 # remove.bg API key
@@ -273,7 +273,7 @@ with bot:
 async def update_restart_msg(chat_id, msg_id):
     DEFAULTUSER = ALIVE_NAME or "Set `ALIVE_NAME` ConfigVar!"
     message = (
-        f"**DEFENDERS USERBOT is back up and running!**\n\n"
+        f"**TEMPEST USERBOT is back up and running!**\n\n"
         f"**Telethon :** __{version.__version__}__\n"
         f"**Python :** __{python_version()}__\n"
         f"**User :** __{DEFAULTUSER}__"
