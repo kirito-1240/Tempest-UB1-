@@ -83,17 +83,16 @@ async def bot_ver(event):
 async def amireallyalive(alive):
     """For .alive command, check if the bot is running."""
     output = (
-        f"🔥DEFENDERS 🔱रक्षक🔱 धर्मो रक्षति रक्षितः ||🚩 𝗨𝗕 𝗜𝗦 𝗔𝗟𝗜𝗩𝗘🔥\n" 
+        f"TEMPEST USERBOT IS ALIVE🔥\n" 
         "▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n" 
         f"⚔️ 𝗠𝗬 𝗕𝗢𝗧 𝗜𝗦 𝗪𝗢𝗥𝗞𝗜𝗡𝗚 ⚔️\n" 
         "▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n" 
         f"🐍 𝗣𝗬𝗧𝗛𝗢𝗡 ➪ v{python_version()}\n" 
         f"⚙️ 𝗧𝗘𝗟𝗘𝗧𝗛𝗢𝗡 ➪ v{version.__version__}\n" 
         f"⚡️𝗠𝗬 𝗢𝗪𝗡𝗘𝗥⚡️➪{DEFAULTUSER}** \n" 
-        f"**⚡️𝗥𝗘𝗣𝗢⚡️➪ [DefendersUb](https://github.com/THETORNADOTEAM/DEFENDERS-USERBOT)** \n" 
-        f"**⚡️𝗖𝗛𝗔𝗡𝗡𝗘𝗟⚡️➪ [𝗝𝗢𝗜𝗡](https://t.me/DEFENDERS_UB_UPDATES)** \n" 
-        f"**⚡️𝗦𝗨𝗣𝗣𝗢𝗥𝗧⚡️➪ [𝗝𝗢𝗜𝗡](https://t.me/DEFENDERS_CHAT)** \n"
-        f"**👤User :** __{DEFAULTUSER}__"
+        f"**⚡️𝗥𝗘𝗣𝗢⚡️➪ [DefendersUb](https://github.com/kirito-1240/TempestUB)** \n" 
+        f"**⚡️𝗖𝗛𝗔𝗡𝗡𝗘𝗟⚡️➪ [𝗝𝗢𝗜𝗡](https://t.me/TEMPEST_UB_UPDATES)** \n" 
+        f"**⚡️𝗦𝗨𝗣𝗣𝗢𝗥𝗧⚡️➪ [𝗝𝗢𝗜𝗡](https://t.me/TempestUBSupport)** \n"
         "▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
    )
     if ALIVE_LOGO:
