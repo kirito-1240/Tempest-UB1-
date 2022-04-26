@@ -3,7 +3,7 @@ import asyncio
 from pyrogram.raw import functions
 from pyrogram.types import Message
 
-from asterix import app, gen
+from userbot import app, gen
 
 app.CMD_HELP.update(
     {
